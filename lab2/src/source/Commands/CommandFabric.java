@@ -11,6 +11,12 @@ public class CommandFabric {
         switch (data[0].toUpperCase()){
             case "DEFINE":
                 return new Define(data);
+            case "PRINT":
+                return new Print();
+            case "PUSH":
+                return new Push(data);
+            case "POP":
+                return new Pop();
             default:
                 throw new RuntimeException("The command could not be processed: " + data[0] + " command does not exist.");
         }

@@ -10,9 +10,8 @@ import java.util.ArrayDeque;
 import static java.lang.System.exit;
 
 public class Calculator {
-
     private final ArrayDeque<ICommand> _commands = new ArrayDeque<>();
-    private HashMap<String, Double> _vars = new HashMap<>();
+    private ContextExecute _contextExecute = new ContextExecute();
 
     public Calculator(String filename){
         Logs.WriteStartInfo();
@@ -55,7 +54,7 @@ public class Calculator {
         else {
             ICommand command = _commands.remove();
             try{
-                _vars = command.Execute(_vars);
+                command.Execute(_contextExecute);
                 Logs.Update(command.GetInfo());
             }
             catch (RuntimeException e){
@@ -68,7 +67,7 @@ public class Calculator {
         while (!_commands.isEmpty()){
             TryExecuteCommand();
         }
-        Logs.WriteEndInfo(_vars);
+        Logs.WriteEndInfo(_contextExecute);
     }
 }
 

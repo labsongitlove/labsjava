@@ -1,6 +1,6 @@
 package source.Commands;
 
-import java.util.HashMap;
+import source.ContextExecute;
 
 public class Define implements ICommand {
     private final String[] _args;
@@ -8,12 +8,10 @@ public class Define implements ICommand {
         _args = args;
     }
 
-    public HashMap<String, Double> Execute(HashMap<String, Double> vars){
+    public void Execute(ContextExecute contextExecute){
         ValidTest();
         double value = Double.parseDouble(_args[2]);
-        vars.put(_args[1], value);
-
-        return vars;
+        contextExecute.UpdateVar(_args[1], value);
     }
     public String GetInfo(){
         ValidTest();

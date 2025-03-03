@@ -5,7 +5,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.HashMap;
 
 public class Logs {
     public static void Update(String message, int numString){
@@ -51,15 +50,12 @@ public class Logs {
         }
     }
 
-    public static void WriteEndInfo(HashMap<String, Double> vars) {
+    public static void WriteEndInfo(ContextExecute contextExecute) {
         String filename = "F:\\projects\\labsjava\\lab2\\src\\source\\log.txt";
 
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(filename, true)))
         {
-            StringBuilder varsInfo = new StringBuilder();
-            for(HashMap.Entry<String, Double> item : vars.entrySet()){
-                varsInfo.append(String.format("%s = %s \n", item.getKey(), item.getValue()));
-            }
+            var varsInfo = contextExecute.GetVars();
             String text = String.format("Vars info: %s\nExecute finished at %s.", varsInfo, LocalTime.now());
             bw.append(text);
         }
