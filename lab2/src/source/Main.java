@@ -10,6 +10,6 @@ public class Main {
             calc = new Calculator();
         }
 
-        calc.TryExecuteCommand();
+        calc.ExecuteAllCommands();
     }
 }
