@@ -14,7 +14,6 @@ public class Main {
 
         Map<String, Integer> wordCounts = new HashMap<>();
         int totalWords = 0;
-        //test
 
         // Читаем файл и подсчитываем частоту слов
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(inputFileName)))) {
