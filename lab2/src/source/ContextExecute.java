@@ -22,9 +22,9 @@ public class ContextExecute {
         return IsVar(key);
     }
 
-    public Double Pop(){
+    public String Pop(){
         if(!_stack.isEmpty()){
-            return _vars.get(_stack.pop());
+            return _stack.pop();
         }
         return null;
     }
@@ -37,6 +37,10 @@ public class ContextExecute {
             return peekName + " = " + peekValue;
         }
         return "null";
+    }
+
+    public Double GetVarValue(String key){
+        return _vars.get(key);
     }
 
     public String GetVars(){

@@ -4,7 +4,6 @@ import source.Commands.CommandFabric;
 import source.Commands.ICommand;
 
 import java.io.*;
-import java.util.HashMap;
 import java.util.ArrayDeque;
 
 import static java.lang.System.exit;
@@ -42,7 +41,7 @@ public class Calculator {
             _commands.add(CommandFabric.GetCommand(line));
         }
         catch (RuntimeException e){
-            return e.toString();
+            return e.getMessage();
         }
         return "Command was correctly identified.";
     }
@@ -58,7 +57,7 @@ public class Calculator {
                 Logs.Update(command.GetInfo());
             }
             catch (RuntimeException e){
-                Logs.Update(e.toString());
+                Logs.Update(e.getMessage());
             }
         }
     }

@@ -27,7 +27,10 @@ public class Logs {
 
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(filename, true)))
         {
-            String text = message + "\n";
+            String text = message;
+            if (!text.isEmpty()){
+                text += '\n';
+            }
             bw.append(text);
         }
         catch(IOException ex){
