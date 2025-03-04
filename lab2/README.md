@@ -13,4 +13,4 @@ POP -- pop from the stack of the variable
 
 \# -- comment
 
-PLUS, DIV, MULT, MINUS -- the first variable +||/||*||- the second variable and the entry to the second variable. The second variable remains on the stack.
+PLUS, DIV, MULT, MINUS -- the first variable +||/||*||- the second variable and the entry to the first variable. The first variable remains on the stack.
