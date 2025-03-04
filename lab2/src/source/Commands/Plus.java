@@ -8,6 +8,9 @@ public class Plus implements ICommand {
     private Double _varValue1;
     private Double _varValue2;
 
+    public Plus(String[] data) {
+    }
+
 
     public void Execute(ContextExecute contextExecute){
         _varName1 = contextExecute.Pop();
@@ -20,7 +23,7 @@ public class Plus implements ICommand {
         _varValue1 += _varValue2;
 
         contextExecute.UpdateVar(_varName1, _varValue1);
-        contextExecute.Push(_varName2);
+        contextExecute.Push(_varName1);
     }
 
     public String GetInfo(){

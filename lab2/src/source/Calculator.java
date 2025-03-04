@@ -11,6 +11,7 @@ import static java.lang.System.exit;
 public class Calculator {
     private final ArrayDeque<ICommand> _commands = new ArrayDeque<>();
     private ContextExecute _contextExecute = new ContextExecute();
+    private CommandFabric _commandFabric = new CommandFabric();
 
     public Calculator(String filename){
         Logs.WriteStartInfo();
@@ -19,7 +20,7 @@ public class Calculator {
 
     public Calculator(){
         Logs.WriteStartInfo();
-        MakeQueueCommands("F:\\projects\\labsjava\\lab2\\src\\source\\default input.txt");
+        MakeQueueCommands("src\\source\\default input.txt");
     }
 
     private void MakeQueueCommands(String filename){
@@ -38,11 +39,11 @@ public class Calculator {
 
     private String MakeCommand(String line){
         try{
-            _commands.add(CommandFabric.GetCommand(line));
+            _commands.add(_commandFabric.GetCommand(line));
         }
         catch (RuntimeException e){
             return e.getMessage();
-        }
+        } catch (Exception ignored) {}
         return "Command was correctly identified.";
     }
 

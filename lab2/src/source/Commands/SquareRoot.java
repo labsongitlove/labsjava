@@ -6,6 +6,9 @@ public class SquareRoot implements ICommand {
     private String _varName = "";
     private Double _varValue;
 
+    public SquareRoot(String[] data) {
+    }
+
 
     public void Execute(ContextExecute contextExecute){
         _varName = contextExecute.Pop();

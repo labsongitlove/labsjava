@@ -1,0 +1,10 @@
+Comment #
+Define DEFINE
+Division DIV
+Minus MINUS
+Multiplication MULT
+Plus PLUS
+Pop POP
+Print PRINT
+Push PUSH
+SquareRoot SQRT

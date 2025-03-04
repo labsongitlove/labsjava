@@ -8,7 +8,7 @@ import java.time.LocalTime;
 
 public class Logs {
     public static void Update(String message, int numString){
-        String filename = "F:\\projects\\labsjava\\lab2\\src\\source\\log.txt";
+        String filename = "src\\source\\log.txt";
 
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(filename, true)))
         {
@@ -23,7 +23,7 @@ public class Logs {
     }
 
     public static void Update(String message){
-        String filename = "F:\\projects\\labsjava\\lab2\\src\\source\\log.txt";
+        String filename = "src\\source\\log.txt";
 
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(filename, true)))
         {
@@ -41,7 +41,7 @@ public class Logs {
     }
 
     public static void WriteStartInfo() {
-        String filename = "F:\\projects\\labsjava\\lab2\\src\\source\\log.txt";
+        String filename = "src\\source\\log.txt";
 
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(filename, true)))
         {
@@ -54,7 +54,7 @@ public class Logs {
     }
 
     public static void WriteEndInfo(ContextExecute contextExecute) {
-        String filename = "F:\\projects\\labsjava\\lab2\\src\\source\\log.txt";
+        String filename = "src\\source\\log.txt";
 
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(filename, true)))
         {
