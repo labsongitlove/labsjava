@@ -12,7 +12,7 @@ public class Plus implements ICommand {
     }
 
 
-    public void Execute(ContextExecute contextExecute){
+    public void Execute(ContextExecute contextExecute) throws Exception{
         _varName1 = contextExecute.Pop();
         _varName2 = contextExecute.Pop();
 
@@ -33,7 +33,7 @@ public class Plus implements ICommand {
 
     private void ValidTest(){
         if (_varName1 == null || _varName2 == null){
-            throw new RuntimeException("Plus can't execute because in stack not enough vars.");
+            throw new NullPointerException("Plus can't execute because in stack not enough vars.");
         }
     }
 }

@@ -50,4 +50,9 @@ public class ContextExecute {
         }
         return varsInfo.toString();
     }
+
+    public void Clear(){
+        _vars.clear();
+        _stack.clear();
+    }
 }

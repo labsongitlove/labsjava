@@ -47,7 +47,7 @@ public class Calculator {
         return "Command was correctly identified.";
     }
 
-    public void TryExecuteCommand(){
+    public void ExecuteCommand(){
         if (_commands.isEmpty()){
             Logs.Update("There are no more executable commands.");
         }
@@ -57,7 +57,7 @@ public class Calculator {
                 command.Execute(_contextExecute);
                 Logs.Update(command.GetInfo());
             }
-            catch (RuntimeException e){
+            catch (Exception e){
                 Logs.Update(e.getMessage());
             }
         }
@@ -65,35 +65,8 @@ public class Calculator {
 
     public void ExecuteAllCommands(){
         while (!_commands.isEmpty()){
-            TryExecuteCommand();
+            ExecuteCommand();
         }
         Logs.WriteEndInfo(_contextExecute);
     }
 }
-
-/*private ArrayList<String> GetCommandArgs(String line){
-        ArrayList<String> args = new ArrayList<String>();
-        StringBuilder wordBuilder = new StringBuilder();
-        char charr;
-        int charNum = 0;
-
-        if (line.isEmpty()){
-            return args;
-        }
-
-        while (line.length() - charNum != 0) {
-            charr = line.charAt(charNum);
-            if (Character.isSpaceChar(charr)){
-                args.add(wordBuilder.toString());
-                wordBuilder.setLength(0);
-            }
-            else {
-                wordBuilder.append(charr);
-            }
-
-            charNum++;
-        }
-        args.add(wordBuilder.toString());
-
-        return args;
-    }*/
