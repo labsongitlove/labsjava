@@ -1,3 +1,3 @@
 # About
 
-A branch for tracking the immediate progress of development.
+A branch with lab release versions and their running intermediate versions.
