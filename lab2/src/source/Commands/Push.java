@@ -1,29 +1,32 @@
 package source.Commands;
 
 import source.ContextExecute;
+import source.exceptions.ArgumentIsNotValid;
+import source.exceptions.CommandException;
 
 public class Push implements ICommand{
-    private String[] _args;
+    private final String[] _args;
+    private boolean _wasPushed = false;
 
     public Push(String[] args){
         _args = args;
     }
 
-    public void Execute(ContextExecute contextExecute){
-        ValidTest();
-        if (!contextExecute.Push(_args[1])) {
-            throw new RuntimeException("An attempt to stack an uninitialized variable.");
+    public void Execute(ContextExecute contextExecute) throws CommandException {
+        if (!contextExecute.Push(_args[1]) || !IsValid()) {
+            throw new ArgumentIsNotValid("An attempt to stack an uninitialized variable.");
         }
+        _wasPushed = true;
     }
 
     public String GetInfo(){
-        ValidTest();
-        return _args[1] + " is pushed.";
+        if (IsValid() && _wasPushed){
+            return _args[1] + " is pushed.";
+        }
+        return "Plus can't execute because argument is not valid.";
     }
 
-    private void ValidTest(){
-        if (_args.length - 1 != 1){
-            throw new RuntimeException("Invalid count of argument.");
-        }
+    private boolean IsValid(){
+        return (_args.length - 1 == 1);
     }
 }

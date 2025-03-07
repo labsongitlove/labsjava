@@ -2,6 +2,7 @@ package source;
 
 import source.Commands.CommandFabric;
 import source.Commands.ICommand;
+import source.exceptions.CommandException;
 
 import java.io.*;
 import java.util.ArrayDeque;
@@ -10,8 +11,8 @@ import static java.lang.System.exit;
 
 public class Calculator {
     private final ArrayDeque<ICommand> _commands = new ArrayDeque<>();
-    private ContextExecute _contextExecute = new ContextExecute();
-    private CommandFabric _commandFabric = new CommandFabric();
+    private final ContextExecute _contextExecute = new ContextExecute();
+    private final CommandFabric _commandFabric = new CommandFabric();
 
     public Calculator(String filename){
         Logs.WriteStartInfo();
@@ -57,7 +58,7 @@ public class Calculator {
                 command.Execute(_contextExecute);
                 Logs.Update(command.GetInfo());
             }
-            catch (Exception e){
+            catch (CommandException e){
                 Logs.Update(e.getMessage());
             }
         }

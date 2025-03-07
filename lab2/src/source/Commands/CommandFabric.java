@@ -1,12 +1,7 @@
 package source.Commands;
 
-import java.awt.image.AreaAveragingScaleFilter;
 import java.io.*;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class CommandFabric {
     HashMap<String, Class<?>> _commandsMap;
@@ -24,8 +19,7 @@ public class CommandFabric {
 
         if (_commandsMap != null){
             if (_commandsMap.get(data[0]) != null){
-                ICommand command = (ICommand) _commandsMap.get(data[0]).getDeclaredConstructor(String[].class).newInstance((Object) data);
-                return command;
+                return (ICommand) _commandsMap.get(data[0]).getDeclaredConstructor(String[].class).newInstance((Object) data);
             }
             throw new RuntimeException("The command could not be processed: " + data[0] + " command does not exist.");
         }

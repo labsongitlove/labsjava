@@ -1,6 +1,8 @@
 package source.Commands;
 
 import source.ContextExecute;
+import source.exceptions.CommandException;
+import source.exceptions.NotEnoughArgumentsOnStackException;
 
 public class Plus implements ICommand {
     private String _varName1 = "";
@@ -12,14 +14,8 @@ public class Plus implements ICommand {
     }
 
 
-    public void Execute(ContextExecute contextExecute) throws Exception{
-        _varName1 = contextExecute.Pop();
-        _varName2 = contextExecute.Pop();
-
-        ValidTest();
-
-        _varValue1 = contextExecute.GetVarValue(_varName1);
-        _varValue2 = contextExecute.GetVarValue(_varName2);
+    public void Execute(ContextExecute contextExecute) throws CommandException{
+        TryInitialization(contextExecute);
         _varValue1 += _varValue2;
 
         contextExecute.UpdateVar(_varName1, _varValue1);
@@ -27,13 +23,26 @@ public class Plus implements ICommand {
     }
 
     public String GetInfo(){
-        ValidTest();
-        return "Plus of the variables " + _varName1 + " and " + _varName2 + " is " + _varValue1 + ".";
+        if (IsValid()){
+            return "Plus of the variables " + _varName1 + " and " + _varName2 + " is " + _varValue1 + ".";
+        }
+        return "Plus can't execute because in stack not enough vars.";
     }
 
-    private void ValidTest(){
-        if (_varName1 == null || _varName2 == null){
-            throw new NullPointerException("Plus can't execute because in stack not enough vars.");
+    private void TryInitialization(ContextExecute contextExecute) throws CommandException{
+        _varName1 = contextExecute.Pop();
+        if (_varName1 == null){
+            throw new NotEnoughArgumentsOnStackException("Plus can't execute because in stack not enough vars.");
         }
+        _varName2 = contextExecute.Pop();
+        if (_varName2 == null){
+            contextExecute.Push(_varName1);
+            throw new NotEnoughArgumentsOnStackException("Plus can't execute because in stack not enough vars.");
+        }
+        _varValue1 = contextExecute.GetVarValue(_varName1);
+        _varValue2 = contextExecute.GetVarValue(_varName2);
+    }
+    private boolean IsValid(){
+        return !(_varName1 == null || _varName2 == null);
     }
 }
