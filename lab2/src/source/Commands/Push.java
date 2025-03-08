@@ -3,6 +3,7 @@ package source.Commands;
 import source.ContextExecute;
 import source.exceptions.ArgumentIsNotValid;
 import source.exceptions.CommandException;
+import source.exceptions.InvalidCountOfArguments;
 
 public class Push implements ICommand{
     private final String[] _args;
@@ -13,7 +14,10 @@ public class Push implements ICommand{
     }
 
     public void Execute(ContextExecute contextExecute) throws CommandException {
-        if (!contextExecute.Push(_args[1]) || !IsValid()) {
+        if (!IsValid()){
+            throw new InvalidCountOfArguments("Invalid count of argument.");
+        }
+        if (!contextExecute.Push(_args[1])) {
             throw new ArgumentIsNotValid("An attempt to stack an uninitialized variable.");
         }
         _wasPushed = true;
@@ -23,7 +27,7 @@ public class Push implements ICommand{
         if (IsValid() && _wasPushed){
             return _args[1] + " is pushed.";
         }
-        return "Plus can't execute because argument is not valid.";
+        return "Push can't execute because argument is not valid.";
     }
 
     private boolean IsValid(){
