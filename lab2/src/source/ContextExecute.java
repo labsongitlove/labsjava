@@ -11,15 +11,15 @@ public class ContextExecute {
         _vars.put(key, value);
     }
 
-    private boolean IsVar(String key){
-        return _vars.containsKey(key);
-    }
-
     public boolean Push(String key){
         if (IsVar(key)){
             _stack.push(key);
         }
         return IsVar(key);
+    }
+
+    private boolean IsVar(String key){
+        return _vars.containsKey(key);
     }
 
     public String Pop(){
@@ -49,5 +49,10 @@ public class ContextExecute {
             varsInfo.append(String.format("%s = %s \n", item.getKey(), item.getValue()));
         }
         return varsInfo.toString();
+    }
+
+    public void Clear(){
+        _vars.clear();
+        _stack.clear();
     }
 }

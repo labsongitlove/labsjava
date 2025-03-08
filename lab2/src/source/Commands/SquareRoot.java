@@ -1,6 +1,9 @@
 package source.Commands;
 
 import source.ContextExecute;
+import source.exceptions.ArgumentIsNotValid;
+import source.exceptions.CommandException;
+import source.exceptions.NotEnoughArgumentsOnStackException;
 
 public class SquareRoot implements ICommand {
     private String _varName = "";
@@ -10,12 +13,8 @@ public class SquareRoot implements ICommand {
     }
 
 
-    public void Execute(ContextExecute contextExecute){
-        _varName = contextExecute.Pop();
-
-        ValidTest();
-
-        _varValue = contextExecute.GetVarValue(_varName);
+    public void Execute(ContextExecute contextExecute) throws CommandException{
+        TryInitialization(contextExecute);
         _varValue = Math.sqrt(_varValue);
 
         contextExecute.UpdateVar(_varName, _varValue);
@@ -23,14 +22,25 @@ public class SquareRoot implements ICommand {
     }
 
     public String GetInfo(){
-        ValidTest();
-
-        return "Sqrt of the variable " + _varName + " is " + _varValue + ".";
+        if (IsValid()){
+            return "Sqrt of the variable " + _varName + " is " + _varValue + ".";
+        }
+        return "Sqrt can't execute.";
     }
 
-    private void ValidTest(){
-        if (_varName == null){
-            throw new RuntimeException("Sqrt can't execute because stack is empty.");
+    private void TryInitialization(ContextExecute contextExecute) throws CommandException {
+        _varName = contextExecute.Pop();
+        if (_varName == null) {
+            throw new NotEnoughArgumentsOnStackException("Sqrt can't execute because in stack not enough vars.");
         }
+        _varValue = contextExecute.GetVarValue(_varName);
+        if (_varValue < 0){
+            throw new ArgumentIsNotValid("Sqrt can't execute because value < 0.");
+        }
+    }
+
+    private boolean IsValid(){
+        return !(_varName == null);
+            //throw new RuntimeException("Sqrt can't execute because stack is empty.");
     }
 }

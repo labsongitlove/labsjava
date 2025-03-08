@@ -1,6 +1,8 @@
 package source.Commands;
 
 import source.ContextExecute;
+import source.exceptions.CommandException;
+import source.exceptions.NotEnoughArgumentsOnStackException;
 
 public class Pop implements ICommand{
     private String _varInfo;
@@ -8,10 +10,10 @@ public class Pop implements ICommand{
     public Pop(String[] data) {
     }
 
-    public void Execute(ContextExecute contextExecute){
+    public void Execute(ContextExecute contextExecute) throws CommandException {
         _varInfo = contextExecute.PeekInfo();
         if (contextExecute.Pop() == null) {
-            throw new RuntimeException("Null reference.");
+            throw new NotEnoughArgumentsOnStackException("Null reference.");
         }
     }
 

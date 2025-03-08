@@ -1,17 +1,22 @@
 package source.Commands;
 
-import java.awt.image.AreaAveragingScaleFilter;
+import source.exceptions.ArgumentIsNotValid;
+import source.exceptions.InvalidCountOfArguments;
+
+import javax.naming.InvalidNameException;
 import java.io.*;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class CommandFabric {
     HashMap<String, Class<?>> _commandsMap;
+    String _filename = "src\\source\\Commands\\config.txt";
 
-    public CommandFabric(){
+    public CommandFabric() throws Exception{
+        _commandsMap = ParceConfig();
+    }
+
+    public CommandFabric(String filename) throws Exception{
+        _filename = filename;
         _commandsMap = ParceConfig();
     }
 
@@ -24,40 +29,31 @@ public class CommandFabric {
 
         if (_commandsMap != null){
             if (_commandsMap.get(data[0]) != null){
-                ICommand command = (ICommand) _commandsMap.get(data[0]).getDeclaredConstructor(String[].class).newInstance((Object) data);
-                return command;
+                return (ICommand) _commandsMap.get(data[0]).getDeclaredConstructor(String[].class).newInstance((Object) data);
             }
-            throw new RuntimeException("The command could not be processed: " + data[0] + " command does not exist.");
+            throw new ArgumentIsNotValid("The command could not be processed: " + data[0] + " command does not exist.");
         }
-        throw new RuntimeException("There is no information about commands(Parse config file error).");
+        throw new NullPointerException("There is no information about commands(Parse config error).");
     }
-    private HashMap<String, Class<?>> ParceConfig(){
-        String filename = "src\\source\\Commands\\config.txt";
-        try(BufferedReader br = new BufferedReader(new FileReader(filename)))
-        {
-            String line;
-            HashMap<String, Class<?>> commandsMap = new HashMap<>();
-            while((line = br.readLine()) != null){
-                String[] temp = line.split(" ");
-                if (temp.length != 2){
-                    throw new RuntimeException("Parse config error: invalid count words in line.");
-                }
-                try {
-                    Class<?> className = Class.forName("source.Commands." + temp[0]);
-                    if (!ICommand.class.isAssignableFrom(className) || className.isInterface()){
-                        throw new RuntimeException("Parse config error: class don't implement ICommand");
-                    }
-                    commandsMap.put(temp[1], className);
-                }
-                catch (ClassNotFoundException e){
-                    throw new RuntimeException("Parse config error: invalid name of command's class.");
-                }
+    private HashMap<String, Class<?>> ParceConfig() throws Exception{
+
+        BufferedReader br = new BufferedReader(new FileReader(_filename));
+        String line;
+        HashMap<String, Class<?>> commandsMap = new HashMap<>();
+        while((line = br.readLine()) != null){
+            String[] temp = line.split(" ");
+            if (temp.length != 2){
+                throw new InvalidCountOfArguments("Parse config error: invalid count words in line.");
             }
-            return commandsMap;
+            try {
+                Class<?> className = Class.forName("source.Commands." + temp[0]);
+                commandsMap.put(temp[1], className);
+            }
+            catch (ClassNotFoundException e){
+                throw new InvalidNameException("Parse config error: invalid name of command's class.");
+            }
         }
-        catch(IOException e){
-            throw new RuntimeException(e.getMessage());
-        }
+        return commandsMap;
     }
 
 }
