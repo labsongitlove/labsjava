@@ -5,7 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import source.Commands.Print;
 import source.ContextExecute;
-import source.exceptions.CommandException;
+import source.exceptions.CommandExceptions.CommandException;
 
 public class PrintTest {
     Print _print;

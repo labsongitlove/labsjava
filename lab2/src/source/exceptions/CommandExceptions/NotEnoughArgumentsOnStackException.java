@@ -1,4 +1,4 @@
-package source.exceptions;
+package source.exceptions.CommandExceptions;
 
 public class NotEnoughArgumentsOnStackException extends CommandException {
     public NotEnoughArgumentsOnStackException(String message) {

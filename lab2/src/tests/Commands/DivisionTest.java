@@ -5,9 +5,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import source.Commands.Division;
 import source.ContextExecute;
-import source.exceptions.ArgumentIsNotValid;
-import source.exceptions.CommandException;
-import source.exceptions.NotEnoughArgumentsOnStackException;
+import source.exceptions.CommandExceptions.ArgumentIsNotValid;
+import source.exceptions.CommandExceptions.CommandException;
+import source.exceptions.CommandExceptions.NotEnoughArgumentsOnStackException;
 
 public class DivisionTest {
     Division _div;

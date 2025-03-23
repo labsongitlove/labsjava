@@ -5,9 +5,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import source.Commands.Define;
 import source.ContextExecute;
-import source.exceptions.ArgumentIsNotValid;
-import source.exceptions.CommandException;
-import source.exceptions.InvalidCountOfArguments;
+import source.exceptions.CommandExceptions.ArgumentIsNotValid;
+import source.exceptions.CommandExceptions.CommandException;
+import source.exceptions.CommandExceptions.InvalidCountOfArguments;
 
 public class DefineTest {
     Define _def;

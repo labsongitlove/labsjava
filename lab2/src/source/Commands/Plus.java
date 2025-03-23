@@ -1,8 +1,8 @@
 package source.Commands;
 
 import source.ContextExecute;
-import source.exceptions.CommandException;
-import source.exceptions.NotEnoughArgumentsOnStackException;
+import source.exceptions.CommandExceptions.CommandException;
+import source.exceptions.CommandExceptions.NotEnoughArgumentsOnStackException;
 
 public class Plus implements ICommand {
     private String _varName1 = "";

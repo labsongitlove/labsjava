@@ -2,7 +2,8 @@ package source;
 
 import source.Commands.CommandFabric;
 import source.Commands.ICommand;
-import source.exceptions.CommandException;
+import source.exceptions.CommandExceptions.CommandException;
+import source.exceptions.FabricExceptions.FabricException;
 
 import java.io.*;
 import java.util.ArrayDeque;
@@ -12,19 +13,19 @@ public class Calculator {
     private final ContextExecute _contextExecute = new ContextExecute();
     private final CommandFabric _commandFabric;
 
-    public Calculator(String filename) throws Exception{
+    public Calculator(String filename) throws FabricException {
         _commandFabric = new CommandFabric();
         Logs.WriteStartInfo();
         MakeQueueCommands(filename);
     }
 
-    public Calculator() throws Exception{
+    public Calculator() throws FabricException {
         _commandFabric = new CommandFabric();
         Logs.WriteStartInfo();
         MakeQueueCommands("src\\source\\default input.txt");
     }
 
-    private void MakeQueueCommands(String filename) throws FileNotFoundException{
+    private void MakeQueueCommands(String filename){
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(filename)))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -33,8 +34,7 @@ public class Calculator {
             }
             Logs.Update("Stack creation is complete");
         } catch (IOException e) {
-            Logs.Update("Error reading the file: " + e.getMessage(), 0);
-            throw new FileNotFoundException();
+            Logs.Update("Error reading the file: " + e.getMessage() + "Stack is empty.", 0);
         }
     }
 
@@ -42,7 +42,7 @@ public class Calculator {
         try{
             _commands.add(_commandFabric.GetCommand(line));
         }
-        catch (Exception e){
+        catch (FabricException e){
             return e.getMessage();
         }
         return "Command was correctly identified.";
