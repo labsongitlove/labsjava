@@ -1,9 +1,9 @@
 package source.Commands;
 
 import source.ContextExecute;
-import source.exceptions.ArgumentIsNotValid;
-import source.exceptions.CommandException;
-import source.exceptions.NotEnoughArgumentsOnStackException;
+import source.exceptions.CommandExceptions.ArgumentIsNotValid;
+import source.exceptions.CommandExceptions.CommandException;
+import source.exceptions.CommandExceptions.NotEnoughArgumentsOnStackException;
 
 public class SquareRoot implements ICommand {
     private String _varName = "";

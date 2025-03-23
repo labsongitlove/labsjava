@@ -6,8 +6,9 @@ import org.junit.jupiter.api.Test;
 import source.Commands.CommandFabric;
 import source.Commands.ICommand;
 import source.ContextExecute;
-import source.exceptions.ArgumentIsNotValid;
-import source.exceptions.InvalidCountOfArguments;
+import source.exceptions.CommandExceptions.ArgumentIsNotValid;
+import source.exceptions.CommandExceptions.InvalidCountOfArguments;
+import source.exceptions.FabricExceptions.FabricException;
 
 import javax.naming.InvalidNameException;
 import java.io.IOException;
@@ -34,7 +35,7 @@ public class CommandFabricTest {
     }
 
     @Test
-    void LetterCaseAndExistCommandTest() throws Exception{
+    void LetterCaseAndExistCommandTest() throws FabricException {
         _contextExecute.Clear();
         _fab = new CommandFabric();
 
@@ -48,7 +49,7 @@ public class CommandFabricTest {
     }
 
     @Test
-    void ConfigIsEmptyTest() throws Exception{
+    void ConfigIsEmptyTest() throws FabricException{
         _contextExecute.Clear();
         _fab = new CommandFabric("src\\tests\\Commands\\empty.txt");
 

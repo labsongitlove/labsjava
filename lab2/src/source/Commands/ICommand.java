@@ -1,7 +1,7 @@
 package source.Commands;
 
 import source.ContextExecute;
-import source.exceptions.CommandException;
+import source.exceptions.CommandExceptions.CommandException;
 
 public interface ICommand {
     void Execute(ContextExecute contextExecute) throws CommandException;

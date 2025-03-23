@@ -5,8 +5,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import source.Commands.Minus;
 import source.ContextExecute;
-import source.exceptions.CommandException;
-import source.exceptions.NotEnoughArgumentsOnStackException;
+import source.exceptions.CommandExceptions.CommandException;
+import source.exceptions.CommandExceptions.NotEnoughArgumentsOnStackException;
 
 public class MinusTest {
     Minus _minus;
