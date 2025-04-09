@@ -69,7 +69,8 @@ public class Calculator {
 
     public void ExecuteAllCommands(){
         while (!_commands.isEmpty()){
-            ExecuteCommand();
+            var mes = ExecuteCommand();
+            Logs.Update(mes);
         }
         Logs.WriteEndInfo(_contextExecute);
     }
