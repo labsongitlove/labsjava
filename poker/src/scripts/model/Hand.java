@@ -23,14 +23,14 @@ public class Hand {
     public ArrayList<Integer> GetCardsValues(){
         ArrayList<Integer> values = new ArrayList<Integer>();
         for (Card card : _cards){
-            values.add(card.GetValue());
+            values.add(card.getValue());
         }
         return values;
     }
     public ArrayList<Integer> GetCardsSuits(){
         ArrayList<Integer> suits = new ArrayList<Integer>();
         for (Card card : _cards){
-            suits.add(card.GetSuit());
+            suits.add(card.getSuit());
         }
         return suits;
     }

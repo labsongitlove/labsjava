@@ -1,4 +1,4 @@
-package scripts.model;
+package scripts.server;
 
 public class Server {
 

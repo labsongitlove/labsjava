@@ -1,5 +1,7 @@
 package scripts.model;
 
+import scripts.user.User;
+
 import java.util.ArrayList;
 
 public class Player {
