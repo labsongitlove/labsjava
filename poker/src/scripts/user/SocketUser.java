@@ -1,5 +1,6 @@
 package scripts.user;
 
+import jakarta.xml.bind.JAXBException;
 import scripts.model.Message;
 
 import java.io.*;
@@ -9,7 +10,8 @@ import java.util.ArrayList;
 
 public class SocketUser extends Thread {
     //TODO with JAXB
-    ArrayList<Message> _messages = new ArrayList<>();
+    ArrayList<String> _InputMessages = new ArrayList<>();
+    ArrayList<String> _OutputMessages = new ArrayList<>();
     public void run() {
         try(Socket socket = new Socket("localhost", 3345);
             BufferedReader br =new BufferedReader(new InputStreamReader(System.in));
@@ -61,5 +63,14 @@ public class SocketUser extends Thread {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+    public void AddMessage(Message message) throws JAXBException {
+        _InputMessages.add(message.Marshal());
+    }
+    public String ReadMessage(){
+        return _OutputMessages.get(0);
+    }
+    public boolean IsHaveMessages(){
+        return _OutputMessages.isEmpty();
     }
 }

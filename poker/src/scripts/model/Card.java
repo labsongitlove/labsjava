@@ -1,14 +1,13 @@
 package scripts.model;
 
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.*;
 
 @XmlRootElement(name = "Card")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Card {
+    @XmlAttribute(name = "Value")
     private final int _value;
+    @XmlAttribute(name = "Suit")
     private final int _suit;
     public Card(){
         _value = 0;
@@ -18,12 +17,10 @@ public class Card {
         _value = value;
         _suit = suit;
     }
-    @XmlElement(name = "Value")
-    public int getValue(){
+    public int GetValue(){
         return _value;
     }
-    @XmlElement(name = "Suit")
-    public int getSuit(){
+    public int GetSuit(){
         return _suit;
     }
 }
