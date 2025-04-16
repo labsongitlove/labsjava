@@ -18,5 +18,6 @@ public class AI {
             return game.GetBetNow();
         }
         return 0;
+        //test
     }
 }
