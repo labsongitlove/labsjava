@@ -9,15 +9,20 @@ import java.util.ArrayList;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Player {
     @XmlAttribute(name = "Money")
-    int _money = 0;
+    private int _money = 0;
     @XmlAttribute(name = "Number")
-    int _number = 0;
+    private int _number = 0;
     @XmlElement(name = "Hand")
-    Hand _hand;
+    private Hand _hand = new Hand();
     @XmlAttribute(name = "Name")
-    String _name;
+    private String _name = "";
+    @XmlAttribute(name = "Bet")
+    private int _bet = 0;
+    @XmlAttribute(name = "BetStatus")
+    private int _betStatus = 0; //0 - nothing, 1 - call, 2 - raise
     @XmlAttribute(name = "IsActive")
-    boolean _isActive;
+    private boolean _isActive = true;
+
     public Player(){}
     public Player(String name, int money, int number, Hand hand){
         _name = name;
@@ -36,5 +41,24 @@ public class Player {
     }
     public int GetMoney(){
         return _money;
+    }
+    public int GetBet() {return _bet;}
+    public int GetBetStatus() {return _betStatus; }
+    public int GetNumber() {return _number; }
+
+    public void SetHand(Hand hand) { _hand = hand; }
+    public void SetMoney(int money) { _money = money; }
+    public void SetBet(int bet) { _bet = Math.min(_money, Math.max(bet, _bet)); }
+    public void ResetBet() { _bet = 0; }
+    public void SetActive(boolean isActive) { _isActive = _money != 0 && isActive; }
+    public void SetBetStatus(int betStatus) { _betStatus = betStatus; }
+    public void PlusMoney(int money){ _money += money; }
+
+    public Player MakeSafelyCopy(){
+        Player player = new Player(_name, _money, _number, new Hand());
+        player.SetBet(_bet);
+        player.SetBetStatus(_betStatus);
+        player.SetActive(_isActive);
+        return player;
     }
 }

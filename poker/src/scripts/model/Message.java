@@ -1,11 +1,14 @@
-package scripts.model;
+package org.ServerClient;
 
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Marshaller;
 import jakarta.xml.bind.Unmarshaller;
 import jakarta.xml.bind.annotation.*;
-import scripts.user.User;
+
+import org.Game.Hand;
+import org.Game.Player;
+
 
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -15,38 +18,43 @@ import java.util.ArrayList;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Message {
     @XmlAttribute(name = "Type")
-    int _type = 0;
+    int _type = 0; // 0 - update, 1 - bet, 2 - login, 3 - registration
     @XmlAttribute(name = "Value")
     int _value = 0;
-    @XmlElement(name = "Hands")
-    ArrayList<Hand> _hands; //0 - table, 1 - your
+    @XmlAttribute(name = "Text")
+    String _text = "";
+    @XmlElement(name = "Table")
+    Hand _table; //0 - table
     @XmlElement(name = "Players")
     ArrayList<Player> _players;
 
     public Message(){}
 
-    public Message(int type, int value) {
+    public Message(int type, int value, String text) {
         _type = type;
         _value = value;
+        _text = text;
     }
-    public Message(int type, int value, ArrayList<Hand> hands, ArrayList<Player> players) {
+    public Message(int type, int value, String text, Hand table, ArrayList<Player> players) {
         _type = type;
         _value = value;
-        _hands = hands;
+        _text = text;
+        _table = table;
         _players = players;
     }
     public Message(String xml) throws JAXBException{
         Unmarshal(xml);
     }
 
+    public String GetText() {return _text;}
     public int GetType(){
         return _type;
     }
     public int GetValue(){
         return _value;
     }
-    public ArrayList<Hand> GetHands(){
-        return _hands;
+    public Hand GetTable(){
+        return _table;
     }
     public ArrayList<Player> GetPlayers(){
         return _players;
@@ -70,7 +78,7 @@ public class Message {
 
         _type = messageXml._type;
         _value = messageXml._value;
-        _hands = messageXml._hands;
+        _table = messageXml._table;
         _players = messageXml._players;
     }
 

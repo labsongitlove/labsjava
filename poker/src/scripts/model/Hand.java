@@ -13,7 +13,12 @@ public class Hand {
     @XmlElement(name="Cards")
     private ArrayList<Card> _cards;
 
-    public Hand(){}
+    public Hand(){
+        _cards = new ArrayList<>();
+        for (int i = 0; i < 5; i++){
+            _cards.add(new Card());
+        }
+    }
     public Hand(ArrayList<Card> cards){
         _cards = cards;
     }
@@ -25,6 +30,9 @@ public class Hand {
     }
     public void SetCards(ArrayList<Card> cards){
         _cards = cards;
+    }
+    public void AddCard(Card card){
+        _cards.add(card);
     }
     public ArrayList<Card> GetCards(){
         return _cards;
@@ -42,5 +50,8 @@ public class Hand {
             suits.add(card.GetSuit());
         }
         return suits;
+    }
+    public boolean IsHandNull(){
+        return _cards.isEmpty() || _cards.get(0).GetSuit() == 0;
     }
 }

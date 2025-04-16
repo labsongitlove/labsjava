@@ -33,18 +33,34 @@ public class ComparatorCards {
         return 2;
     }
     public ArrayList<Hand> GetBestHands(ArrayList<Hand> hands, Hand table){
-        ArrayList<Hand> BestNow = new ArrayList<Hand>();
-        BestNow.add(hands.get(0));
+        ArrayList<Hand> bestNow = new ArrayList<Hand>();
+        bestNow.add(hands.get(0));
         for (int i = 1; i < hands.size(); i++){
-            int result = IsFirstBest(BestNow.get(0), hands.get(i), table);
+            int result = IsFirstBest(bestNow.get(0), hands.get(i), table);
             if (result == 2){
-                BestNow.add(hands.get(i));
+                bestNow.add(hands.get(i));
             }
             if (result == 3){
-                BestNow.clear();
-                BestNow.add(hands.get(i));
+                bestNow.clear();
+                bestNow.add(hands.get(i));
             }
         }
-        return BestNow;
+        return bestNow;
+    }
+    public ArrayList<Player> GetBestPlayers(ArrayList<Player> players, Hand table){
+        ArrayList<Player> bestPlayers = new ArrayList<>();
+        ArrayList<Hand> hands = new ArrayList<>();
+        for (Player player : players){
+            hands.add(player.GetHand());
+        }
+        var bestHands = GetBestHands(hands, table);
+        for (Hand hand : bestHands){
+            for (Player player : players){
+                if(player.GetHand() == hand){
+                    bestPlayers.add(player);
+                }
+            }
+        }
+        return bestPlayers;
     }
 }

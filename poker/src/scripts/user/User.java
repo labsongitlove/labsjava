@@ -1,26 +1,26 @@
 package scripts.user;
 
+import jakarta.xml.bind.JAXBException;
 import scripts.model.Hand;
 import scripts.model.Message;
 import scripts.model.Player;
+import scripts.server.MessagesHandlerServer;
 
 import java.util.ArrayList;
 
 public class User {
-    Hand _table;
-    Player _myPlayer;
-    ArrayList<Player> _players = new ArrayList<Player>();
     SocketUser _socket;
-    public User(Hand table, Player myPlayer, ArrayList<Player> players){
-        _table = table;
-        _myPlayer = myPlayer;
-        _players = players;
-
+    MessagesHandlerUser _messagesHandlerUser = new MessagesHandlerUser();
+    public User(){
         _socket = new SocketUser();
-        _socket.start();
+        new Thread(_socket).start();
     }
-
-    public void Update(Message message){
-
+    public void SendMessage(String input) throws JAXBException{
+        Message message = _messagesHandlerUser.MakeMessage(input);
+        _socket.AddMessage(message);
+    }
+    public void Update() throws JAXBException {
+        if (_socket.IsHaveMessages())
+            _messagesHandlerUser.Parsing(_socket.ReadMessage());
     }
 }
