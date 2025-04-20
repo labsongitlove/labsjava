@@ -23,7 +23,9 @@ public class AI {
         }
         else if (_type == 2){
             Hand handPlusTable = new Hand(game.GetTable().GetCards(), player.GetHand().GetCards());
-            double max = Math.max(Math.max(ChangeProcent.Flash(handPlusTable), ChangeProcent.Street(handPlusTable)), ChangeProcent.ThreeCards(handPlusTable));
+            double max = Math.max(Math.max(ChangeProcent.Flash(handPlusTable, game.GetMaxCards()),
+                    ChangeProcent.Street(handPlusTable, game.GetMaxCards())),
+                    ChangeProcent.ThreeCards(handPlusTable, game.GetMaxCards()));
             if (max >= 0.5){
                 double betMult = max * 5 / 3 + 1;
                 return (int) Math.max(game.GetBetNow(), player.GetBet() * betMult);
@@ -32,19 +34,23 @@ public class AI {
                 double betMult = max * 5 / 3 + 1;
                 return (int) Math.max(game.GetBetNow(), player.GetBet() + 100 * betMult);
             }
-            else if (max >= 0.05 || game.GetBetNow() == player.GetBet() || ChangeProcent.IsDouble(handPlusTable)){
+            else if (max >= 0.05 || game.GetBetNow() == player.GetBet() ||
+                    ChangeProcent.IsDouble(handPlusTable, game.GetMaxCards())){
                 return game.GetBetNow();
             }
             return 0;
         }
         else if (_type == 3){
             Hand handPlusTable = new Hand(game.GetTable().GetCards(), player.GetHand().GetCards());
-            double max = Math.max(Math.max(ChangeProcent.Flash(handPlusTable), ChangeProcent.Street(handPlusTable)), ChangeProcent.ThreeCards(handPlusTable));
+            double max = Math.max(Math.max(ChangeProcent.Flash(handPlusTable, game.GetMaxCards()),
+                    ChangeProcent.Street(handPlusTable, game.GetMaxCards())),
+                    ChangeProcent.ThreeCards(handPlusTable, game.GetMaxCards()));
             if (max >= 0.5){
                 double betMult = max * 5 / 3 + 1;
                 return (int) Math.max(game.GetBetNow(), player.GetBet() + 100 * betMult);
             }
-            else if (game.GetBetNow() == player.GetBet() || ChangeProcent.IsDouble(handPlusTable)){
+            else if (game.GetBetNow() == player.GetBet() ||
+                    ChangeProcent.IsDouble(handPlusTable, game.GetMaxCards())){
                 return game.GetBetNow();
             }
             return 0;

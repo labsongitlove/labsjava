@@ -15,9 +15,6 @@ public class MessagesHandlerServer {
     public void UpdateGame(Game game){
         _game = game;
     }
-    /*public Message GetMessage(){
-        return new Message(0, 0, 0, _game.GetTable(), _game.GetPlayers());
-    }*/
     public void Parsing(Message message, Player player){
         if (message.GetType() == 1){
             if (_game.GetStatus() == 1){

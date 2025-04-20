@@ -47,9 +47,6 @@ public class InternetManager implements AutoCloseable {
         }
         return null;
     }
-    public Player FindPlayerForToken(int token){
-        return _tokenPlayerTable.get(token);
-    }
     public void Update() throws JAXBException, IOException{
         for (SocketController socket : _tokenSocketTable.values()){
             if (socket.IsHaveMessages()){
@@ -70,7 +67,6 @@ public class InternetManager implements AutoCloseable {
         if (_socketNext.IsHaveMessages()){
             if (_messagesHandlerServer.IsMessageRegistrationOrLogin(_socketNext.GetMessage()))
                 _status = 1;
-            //System.out.println(Long.toString(_socketNext.GetConnectionLostTime()) + " " + Long.toString(_socketNext.GetAfkTime()));
         }
         if (_socketNext.GetConnectionLostTime() >= 1000 || _socketNext.GetAfkTime() >= 1000){
             _socketNext.CloseClient();
@@ -101,7 +97,7 @@ public class InternetManager implements AutoCloseable {
 
         return player;
     }
-    public void UpdateInfo() throws JAXBException{ //TODO make "for players" and make "send ID" in message
+    public void UpdateInfo() throws JAXBException{
         SendAllSafely(0, 0, "");
     }
 
@@ -129,7 +125,7 @@ public class InternetManager implements AutoCloseable {
             }
         }
     }
-    public void SendResult() throws JAXBException{
+    public void SendAllUnsafely() throws JAXBException{
         for (Player player : _tokenPlayerTable.values()){
             if (!IsAI(player)){
                 int token = FindTokenOfPlayer(player);
@@ -141,15 +137,7 @@ public class InternetManager implements AutoCloseable {
     public void KillPlayer(Player player) throws IOException{
         _playerAITable.remove(player);
         Integer token = FindTokenOfPlayer(player);
-        if (token != null){
-            _tokenPlayerTable.remove(token);
-            SocketController socket = _tokenSocketTable.get(token);
-            socket.CloseClient();
-            _tokenSocketTable.remove(token);
-            Thread thread = _tokenThreadTable.get(token);
-            thread.interrupt();
-            _tokenThreadTable.remove(token);
-        }
+        KillPlayer(token);
     }
     public void KillQuitedPlayersInWait() throws IOException{
         for (int token : _quitedTokens){

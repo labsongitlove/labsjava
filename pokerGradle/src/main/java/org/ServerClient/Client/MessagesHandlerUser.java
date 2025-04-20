@@ -13,9 +13,6 @@ public class MessagesHandlerUser {
 
     private boolean _isQuit = false;
 
-    public MessagesHandlerUser(){
-
-    }
     public void Parsing(Message message){
         if (message.GetType() == 0){
             _table = message.GetTable();

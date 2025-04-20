@@ -9,9 +9,8 @@ add AI name:Bob money:1000000 type:2
 add AI name:Gabe money:1000000 type:3
 start
  */
-//TODO: концепцию пользователей, ии, модель обновляет состояние и содержит user, view узнает у модели состояние и в зависимости от него изменяет визуал, контролер только ввод.
 public class Server {
-    public static void main(String[] args) throws JAXBException, IOException, InterruptedException {
+    public static void main(String[] args) throws JAXBException, IOException{
         Game game = new Game();
         long time = 0;
         try(InternetManager internetManager = new InternetManager(game); ServerTerminal serverTerminal = new ServerTerminal(game, internetManager)){
@@ -23,11 +22,11 @@ public class Server {
                 int status = game.GetStatus();
                 if (status == 0 && game.GetPlayers() != null && game.GetPlayers().size() > 1){
                     if (time == 0){
-                        internetManager.SendResult();
+                        internetManager.SendAllUnsafely();
                         time = System.currentTimeMillis();
                     }
                     else if (System.currentTimeMillis() - time >= 10000){
-                        game.Start();
+                        game.NextStep();
                         System.out.println("Game was started");
                         internetManager.UpdateInfo();
                         time = 0;
@@ -51,13 +50,15 @@ public class Server {
                             internetManager.UpdateInfo();
                         }
                     }
-                    if (game.TryPrebets()){
-                        internetManager.UpdateInfo();
-                    }
                 }
                 else if (status == 2){
                     game.NextStep();
                     System.out.println("Next step");
+                    internetManager.UpdateInfo();
+                }
+                status = game.GetStatus();
+                if (status == 1 && game.TryPrebets()){
+                    System.out.println(game.GetStatus());
                     internetManager.UpdateInfo();
                 }
                 status = internetManager.GetStatus();

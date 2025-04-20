@@ -40,7 +40,6 @@ public class SocketController implements Runnable {
 
                     output.write(messageIn + "\n");
                     output.flush();
-                    //System.out.println("Server send message " + messageIn + ".");
                 }
                 if(input.ready()){
                     String messageOut = input.readLine();
@@ -65,7 +64,6 @@ public class SocketController implements Runnable {
                 }
                 else
                     _afkTime = System.currentTimeMillis() - _afkStartTime;
-                //System.out.println(Long.toString(_afkTime) + " " + Long.toString(_connectionLostTime));
             }
 
             input.close();

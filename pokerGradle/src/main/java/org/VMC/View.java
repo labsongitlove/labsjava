@@ -7,7 +7,8 @@ import org.Game.Player;
 import java.util.ArrayList;
 
 public class View {
-    Model _model;
+    private final Model _model;
+
     public View(Model model){
         _model = model;
     }

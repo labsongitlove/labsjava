@@ -40,17 +40,37 @@ public class Player {
     public int GetMoney(){
         return _money;
     }
-    public int GetBet() {return _bet;}
-    public int GetBetStatus() {return _betStatus; }
-    public int GetNumber() {return _number; }
+    public int GetBet(){
+        return _bet;
+    }
+    public int GetBetStatus() {
+        return _betStatus;
+    }
+    public int GetNumber() {
+        return _number;
+    }
 
-    public void SetHand(Hand hand) { _hand = hand; }
-    public void SetMoney(int money) { _money = money; }
-    public void SetBet(int bet) { _bet = Math.max(_bet, Math.min(_money, bet)); }
-    public void ResetBet() { _bet = 0; }
-    public void SetActive(boolean isActive) { _isActive = _money != 0 && isActive; }
-    public void SetBetStatus(int betStatus) { _betStatus = betStatus; }
-    public void PlusMoney(int money){ _money += money; }
+    public void SetHand(Hand hand) {
+        _hand = hand;
+    }
+    public void SetMoney(int money) {
+        _money = money;
+    }
+    public void SetBet(int bet) {
+        _bet = Math.max(_bet, Math.min(_money, bet));
+    }
+    public void ResetBet() {
+        _bet = 0;
+    }
+    public void SetActive(boolean isActive) {
+        _isActive = _money != 0 && isActive;
+    }
+    public void SetBetStatus(int betStatus) {
+        _betStatus = betStatus;
+    }
+    public void PlusMoney(int money){
+        _money += money;
+    }
 
     public Player MakeSafelyCopy(){
         Player player = new Player(_name, _money, _number, new Hand());

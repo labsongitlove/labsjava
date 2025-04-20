@@ -5,13 +5,12 @@ import org.ServerClient.Message;
 
 import java.io.*;
 import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.net.Socket;
 import java.util.ArrayDeque;
 
 public class SocketUser implements Runnable {
-    private ArrayDeque<String> _InputMessages = new ArrayDeque<>();
-    private ArrayDeque<String> _OutputMessages = new ArrayDeque<>();
+    private final ArrayDeque<String> _InputMessages = new ArrayDeque<>();
+    private final ArrayDeque<String> _OutputMessages = new ArrayDeque<>();
 
     private long _lastPingTime = System.currentTimeMillis();
     private boolean _connectionIsClosed = false;
@@ -40,18 +39,18 @@ public class SocketUser implements Runnable {
             }
         } catch (SocketException e){
             _connectionIsClosed = true;
-        }catch (UnknownHostException e) {
-            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
     }
-    public synchronized void AddMessage(Message message) throws JAXBException {
+    public synchronized void AddMessage(Message message) {
         if (message != null)
             _InputMessages.addLast(message.MarshalJSON());
     }
     public synchronized Message ReadMessage() throws JAXBException{
-        return Message.Unmarshal(_OutputMessages.pollFirst());
+        if (!_OutputMessages.isEmpty())
+            return Message.Unmarshal(_OutputMessages.pollFirst());
+        return null;
     }
     public synchronized boolean IsHaveMessages(){
         return !_OutputMessages.isEmpty();

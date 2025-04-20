@@ -11,8 +11,8 @@ import java.util.Collection;
 public class ServerTerminal implements AutoCloseable{
     private Game _game;
     private boolean _isGameUpdated = false;
-    private InternetManager _internetManager;
-    private BufferedReader _input;
+    private final InternetManager _internetManager;
+    private final BufferedReader _input;
 
     public ServerTerminal(Game game, InternetManager internetManager){
         _game = game;
@@ -36,7 +36,8 @@ public class ServerTerminal implements AutoCloseable{
             System.out.println(CommandSet(parsedCommand));
         }
         if (parsedCommand[0].equals("start")){
-            _game.Start();
+            if (_game.GetStatus() == 0)
+                _game.NextStep();
         }
         if (parsedCommand[0].equals("add")){
             System.out.println(CommandAdd(parsedCommand));
@@ -47,7 +48,7 @@ public class ServerTerminal implements AutoCloseable{
         _internetManager.UpdateInfo();
     }
     private String CommandGamerule(String[] parsedCommand){
-        StringBuilder output = new StringBuilder("Gamerules now: ");
+        String output = "Gamerules now: ";
         int type = 0;
 
         for (String rule: parsedCommand){
@@ -58,7 +59,7 @@ public class ServerTerminal implements AutoCloseable{
         }
         _internetManager.UpdateGameRule(type);
         _isGameUpdated = true;
-        return output.toString();
+        return output;
     }
 
     private String CommandSet(String[] parsedCommand){

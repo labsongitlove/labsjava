@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Combinations {
-    public static int GetComb(Hand handPlusTable){
-        boolean isFlash = IsFlash(handPlusTable);
-        boolean isStreet = IsStreet(handPlusTable);
+    public static int GetComb(Hand handPlusTable, int maxCards){
+        boolean isFlash = ChangeProcent.Flash(handPlusTable, maxCards) == 1;
+        boolean isStreet = ChangeProcent.Street(handPlusTable, maxCards) == 1;
         int maxCardWithOneValue = MaxCardWithOneValue(handPlusTable);
         int pairsCount = PairsCount(handPlusTable);
         int maxCardValue = MaxCardValue(handPlusTable);
@@ -39,12 +39,6 @@ public class Combinations {
             return 2;
         }
         return 1;
-    }
-    private static boolean IsFlash(Hand handPlusTable){
-        return ChangeProcent.Flash(handPlusTable) == 1;
-    }
-    private static boolean IsStreet(Hand handPlusTable){
-        return ChangeProcent.Street(handPlusTable) == 1;
     }
     private static int MaxCardWithOneValue(Hand handPlusTable){
         ArrayList<Integer> cards = handPlusTable.GetCardsValues();

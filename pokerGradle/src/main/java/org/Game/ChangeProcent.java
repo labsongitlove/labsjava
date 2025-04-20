@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class ChangeProcent {
-    public static double Flash(Hand handPlusTable) {
+    public static double Flash(Hand handPlusTable, int maxCards) {
         ArrayList<Integer> cards = handPlusTable.GetCardsSuits();
         Collections.sort(cards);
         int counter = 1;
@@ -20,12 +20,12 @@ public class ChangeProcent {
         double chance = 1;
         int iter = 0;
         for (int i = max; i < 5; i++){
-            chance *= (double) (13 - i) * Math.max(0, 7 - cards.size() - iter) / (52 - cards.size() - iter);
+            chance *= (double) (13 - i) * Math.max(0, maxCards - cards.size() - iter) / (52 - cards.size() - iter);
             iter++;
         }
         return chance;
     }
-    public static double Street(Hand handPlusTable){
+    public static double Street(Hand handPlusTable, int maxCards){
         ArrayList<Integer> cards = handPlusTable.GetCardsValues();
         Collections.sort(cards);
         int counter;
@@ -44,12 +44,12 @@ public class ChangeProcent {
         double chance = 1;
         int iter = 0;
         for (int i = max; i < 5; i++){
-            chance *= (double) 4 * Math.max(0, 7 - cards.size() - iter) / (52 - cards.size() - iter);
+            chance *= (double) 4 * Math.max(0, maxCards - cards.size() - iter) / (52 - cards.size() - iter);
             iter++;
         }
         return chance;
     }
-    public static double ThreeCards(Hand handPlusTable){
+    public static double ThreeCards(Hand handPlusTable, int maxCards){
         ArrayList<Integer> cards = handPlusTable.GetCardsValues();
         Collections.sort(cards);
         int max = 1;
@@ -66,34 +66,12 @@ public class ChangeProcent {
         double chance = 1;
         double iter = 0;
         for (int i = max; i < 3; i++){
-            chance *= (double) (4 - i) * Math.max(0, 7 - cards.size() - iter) / (52 - cards.size() - iter);
+            chance *= (double) (4 - i) * Math.max(0, maxCards - cards.size() - iter) / (52 - cards.size() - iter);
             iter++;
         }
         return chance;
     }
-    public static double Square(Hand handPlusTable){
-        ArrayList<Integer> cards = handPlusTable.GetCardsValues();
-        Collections.sort(cards);
-        int max = 1;
-        int counter = 1;
-        for(int i = 0; i < cards.size() - 1; i++){
-            if (cards.get(i).equals(cards.get(i + 1))){
-                counter++;
-                max = Math.max(max, counter);
-            }
-            else {
-                counter = 1;
-            }
-        }
-        double chance = 1;
-        int iter = 0;
-        for (int i = max; i < 4; i++){
-            chance *= (double) (4 - i) * Math.max(0, 7 - cards.size() - iter) / (52 - cards.size() - iter);
-            iter++;
-        }
-        return chance;
-    }
-    public static boolean IsDouble(Hand handPlusTable){
+    public static boolean IsDouble(Hand handPlusTable, int maxCards){
         ArrayList<Integer> cards = handPlusTable.GetCardsValues();
         Collections.sort(cards);
         for(int i = 0; i < cards.size() - 1; i++){

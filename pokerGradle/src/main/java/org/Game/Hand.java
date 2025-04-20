@@ -51,7 +51,4 @@ public class Hand {
         }
         return suits;
     }
-    public boolean IsHandNull(){
-        return _cards.isEmpty() || _cards.get(0).GetSuit() == 0;
-    }
 }
