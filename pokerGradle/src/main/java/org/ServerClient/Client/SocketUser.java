@@ -4,6 +4,7 @@ import jakarta.xml.bind.JAXBException;
 import org.ServerClient.Message;
 
 import java.io.*;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.net.Socket;
 import java.util.ArrayDeque;
@@ -11,6 +12,10 @@ import java.util.ArrayDeque;
 public class SocketUser implements Runnable {
     private ArrayDeque<String> _InputMessages = new ArrayDeque<>();
     private ArrayDeque<String> _OutputMessages = new ArrayDeque<>();
+
+    private long _lastPingTime = System.currentTimeMillis();
+    private boolean _connectionIsClosed = false;
+
     public void run() {
         try(Socket socket = new Socket("localhost", 3345);
             BufferedWriter output = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -22,16 +27,20 @@ public class SocketUser implements Runnable {
 
                     output.write(messageIn + "\n");
                     output.flush();
-                    System.out.println("Client get message " + messageIn + ".");
                 }
                 if(input.ready()){
                     String messageOut = input.readLine();
                     _OutputMessages.addLast(messageOut);
                 }
+                if (System.currentTimeMillis() - _lastPingTime >= 500){
+                    _lastPingTime = System.currentTimeMillis();
+                    output.write("ping\n");
+                    output.flush();
+                }
             }
-            System.out.println("Closing connections & channels on clentSide - DONE.");
-
-        } catch (UnknownHostException e) {
+        } catch (SocketException e){
+            _connectionIsClosed = true;
+        }catch (UnknownHostException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
@@ -39,7 +48,7 @@ public class SocketUser implements Runnable {
     }
     public synchronized void AddMessage(Message message) throws JAXBException {
         if (message != null)
-            _InputMessages.addLast(message.Marshal());
+            _InputMessages.addLast(message.MarshalJSON());
     }
     public synchronized Message ReadMessage() throws JAXBException{
         return Message.Unmarshal(_OutputMessages.pollFirst());
@@ -47,4 +56,5 @@ public class SocketUser implements Runnable {
     public synchronized boolean IsHaveMessages(){
         return !_OutputMessages.isEmpty();
     }
+    public synchronized boolean ConnectionIsClosed() { return _connectionIsClosed; }
 }

@@ -1,5 +1,6 @@
 package org.ServerClient;
 
+import com.google.gson.Gson;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Marshaller;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Message {
     @XmlAttribute(name = "Type")
-    int _type = 0; // 0 - update, 1 - bet, 2 - login, 3 - registration
+    int _type = 0; // 0 - update, 1 - bet, 2 - login, 3 - registration, 4 - quit
     @XmlAttribute(name = "Value")
     int _value = 0;
     @XmlAttribute(name = "Text")
@@ -69,6 +70,10 @@ public class Message {
         return writer.toString();
     }
 
+    public String MarshalJSON(){
+        return new Gson().toJson(this);
+    }
+
     private void UnmarshalInitial(String xml) throws JAXBException {
         JAXBContext context = JAXBContext.newInstance(Message.class);
 
@@ -82,11 +87,14 @@ public class Message {
         _players = messageXml._players;
     }
 
-    public static Message Unmarshal(String xml) throws JAXBException{
+    public static Message Unmarshal(String string) throws JAXBException{
+        if (!string.startsWith("<?xml")){
+            return new Gson().fromJson(string, Message.class);
+        }
         JAXBContext context = JAXBContext.newInstance(Message.class);
 
         Unmarshaller unmarshaller = context.createUnmarshaller();
-        StringReader reader = new StringReader(xml);
+        StringReader reader = new StringReader(string);
 
         return (Message) unmarshaller.unmarshal(reader);
     }

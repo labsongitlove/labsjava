@@ -13,7 +13,7 @@ public class MessagesHandlerServer {
     }
 
     public void UpdateGame(Game game){
-
+        _game = game;
     }
     /*public Message GetMessage(){
         return new Message(0, 0, 0, _game.GetTable(), _game.GetPlayers());
@@ -24,6 +24,9 @@ public class MessagesHandlerServer {
                 _game.DoBet(player, message.GetValue());
             }
         }
+    }
+    public boolean IsMessageRegistrationOrLogin(Message message){
+        return message.GetType() == 2 || message.GetType() == 3;
     }
     public Message MakeSafelyMessage(Player playerTo, int type, int value, String text){
         ArrayList<Player> players = new ArrayList<>();
@@ -38,7 +41,10 @@ public class MessagesHandlerServer {
     public Message MakeMessage(int type, int value, String text){
         return new Message(type, value, text, _game.GetTable(), _game.GetPlayers());
     }
-    public String GetNameInMessage(Message message){
-        return message.GetText();
+    public String GetTextInMessage(Message message){
+        return message.GetText().split(" ")[0];
+    }
+    public boolean IsQuitMessage(Message message){
+        return message.GetType() == 4;
     }
 }

@@ -41,39 +41,10 @@ public class Combinations {
         return 1;
     }
     private static boolean IsFlash(Hand handPlusTable){
-        ArrayList<Integer> cards = handPlusTable.GetCardsSuits();
-        Collections.sort(cards);
-        int counter = 1;
-        int max = 1;
-        for(int i = 0; i < cards.size() - 1; i++){
-            if (cards.get(i) != cards.get(i + 1)){
-                if (max < counter){
-                    max = counter;
-                }
-                counter = 0;
-            }
-            counter++;
-        }
-        return max >= 5;
+        return ChangeProcent.Flash(handPlusTable) == 1;
     }
     private static boolean IsStreet(Hand handPlusTable){
-        ArrayList<Integer> cards = handPlusTable.GetCardsValues();
-        Collections.sort(cards);
-        int counter = 1;
-        int max = 1;
-        for(int i = 0; i < cards.size() - 1; i++){
-            if (cards.get(i) == cards.get(i + 1)){
-                counter--;
-            }
-            else if (cards.get(i) + 1 != cards.get(i + 1)){
-                if (max < counter){
-                    max = counter;
-                }
-                counter = 0;
-            }
-            counter++;
-        }
-        return max >= 5;
+        return ChangeProcent.Street(handPlusTable) == 1;
     }
     private static int MaxCardWithOneValue(Hand handPlusTable){
         ArrayList<Integer> cards = handPlusTable.GetCardsValues();
@@ -81,7 +52,7 @@ public class Combinations {
         int max = 1;
         int now = 1;
         for(int i = 0; i < cards.size() - 1; i++){
-            if (cards.get(i) == cards.get(i + 1)){
+            if (cards.get(i).equals(cards.get(i + 1))){
                 now++;
                 if (max < now){
                     max = now;
@@ -99,7 +70,7 @@ public class Combinations {
         int max = 0;
         int now = 1;
         for(int i = 0; i < cards.size() - 1; i++){
-            if (cards.get(i) == cards.get(i + 1)){
+            if (cards.get(i).equals(cards.get(i + 1))){
                 now++;
             }
             else {

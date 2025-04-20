@@ -14,8 +14,25 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
     implementation 'jakarta.xml.bind:jakarta.xml.bind-api:3.0.0'
     implementation 'org.glassfish.jaxb:jaxb-runtime:3.0.0'
+    implementation 'com.google.code.gson:gson:2.10.1'
 }
 
 test {
     useJUnitPlatform()
+}
+
+task runClient(type: JavaExec){
+    main = 'org.VMC.Main'
+    classpath = sourceSets.main.runtimeClasspath
+    standardOutput = System.out
+    errorOutput = System.err
+    standardInput = System.in
+}
+
+task runServer(type: JavaExec){
+    main = 'org.ServerClient.Server.Server'
+    classpath = sourceSets.main.runtimeClasspath
+    standardOutput = System.out
+    errorOutput = System.err
+    standardInput = System.in
 }

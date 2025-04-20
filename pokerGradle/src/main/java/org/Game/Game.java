@@ -11,7 +11,7 @@ public class Game {
     private ArrayList<Card> _cards;
     private int _type = 0; //0 - texas
     private int _seed = 0;
-    private int _step = 0;
+    private int _step = 3;
     private int _betPlayerIndexNow = 0;
     private int _betNow = 0;
     private boolean _isFirstBetInStep = true;
@@ -19,6 +19,7 @@ public class Game {
     private int _status = 0; //0 - finished; 1 - waiting bet; 2 - waiting next step
     private int _dealerPlayerIndexNow = 0;
     private Random _random;
+    private ArrayList<Player> _killedPlayers = new ArrayList<>();
     //synchronizedList
     public Game(){
         _seed = new Random().nextInt();
@@ -88,6 +89,10 @@ public class Game {
         _betNow = 0;
         CleanBetStatuses();
 
+        for (Player player : _killedPlayers){
+            _players.remove(player);
+        }
+
         _table = new Hand();
         _cards = new ArrayList<>();
         for (int suit = 1; suit < 5; suit++){
@@ -109,6 +114,22 @@ public class Game {
         }
         _dealerPlayerIndexNow = (_dealerPlayerIndexNow + 1) % _players.size();
         _betPlayerIndexNow = _dealerPlayerIndexNow;
+
+        int num = 0;
+        for (int i = 1; i < _players.size(); i++){
+            num = (_betPlayerIndexNow + i) % _players.size();
+            Player player = _players.get(num);
+            if (player.IsActive()) { break; }
+        }
+        _players.get(num).SetBet(25);
+        int num2 = 0;
+        for (int i = 1; i < _players.size(); i++){
+            num2 = (num + i) % _players.size();
+            Player player = _players.get(num2);
+            if (player.IsActive()) { break; }
+        }
+        _players.get(num2).SetBet(50);
+        _betNow = Math.max(_players.get(num).GetBet(), _players.get(num2).GetBet());
     }
     public Card CardChoice(int seed){
         Random random = _random;
@@ -133,15 +154,31 @@ public class Game {
         }
     }
 
-    public void TryPrebets (){
+    public boolean TryPrebets (){
+        boolean isPrebersing = false;
+        int num = 0;
+        for (int i = 0; i < _players.size(); i++){
+            num = (_betPlayerIndexNow + i) % _players.size();
+            Player player = _players.get(num);
+            if (player.IsActive()) { break; }
+        }
+        _betPlayerIndexNow = num;
         while (_preBets.containsKey(_players.get(_betPlayerIndexNow)))
         {
+            isPrebersing = true;
+
             Player playerBet = _players.get(_betPlayerIndexNow);
             int money = _preBets.get(playerBet);
             if (_isFirstBetInStep){
-                _isFirstBetInStep = false;
-                playerBet.SetBetStatus(2);
-                playerBet.SetBet(money);
+                if (money < _betNow && money < playerBet.GetMoney()){
+                    playerBet.SetBetStatus(1);
+                    playerBet.SetActive(false);
+                }
+                else{
+                    _isFirstBetInStep = false;
+                    playerBet.SetBetStatus(2);
+                    playerBet.SetBet(money);
+                }
             }
             else if (money > _betNow && money <= playerBet.GetMoney()){
                 CleanBetStatuses();
@@ -157,13 +194,13 @@ public class Game {
                 playerBet.SetBetStatus(1);
                 playerBet.SetActive(false);
             }
-            if (_players.get(((_betPlayerIndexNow + 1) % _players.size())).GetBetStatus() == 2){
+            /*if (_players.get(((_betPlayerIndexNow + 1) % _players.size())).GetBetStatus() == 2){
                 _status = 2;
                 _preBets.remove(playerBet);
                 _betNow = Math.max(_betNow, money);
                 break;
-            }
-            int num = 0;
+            }*/
+            num = 0;
             for (int i = 1; i < _players.size(); i++){
                 num = (_betPlayerIndexNow + i) % _players.size();
                 Player player = _players.get(num);
@@ -172,12 +209,17 @@ public class Game {
             _preBets.remove(playerBet);
             _betNow = Math.max(_betNow, money);
             _betPlayerIndexNow = num;
+            if (_players.get(num).GetBetStatus() == 2){
+                _status = 2;
+                break;
+            }
             if (_preBets.containsKey(_players.get(_betPlayerIndexNow)) &&
                     _preBets.get(_players.get(_betPlayerIndexNow)) < _betNow &&
                     _preBets.get(_players.get(_betPlayerIndexNow)) != _players.get(_betPlayerIndexNow).GetMoney()){
                 _preBets.remove(_players.get(_betPlayerIndexNow));
             }
         }
+        return isPrebersing;
     }
 
     public boolean IsActiveMoreOne(){
@@ -227,7 +269,7 @@ public class Game {
                     isWinner = true;
                 }
             }
-            if (!isWinner){
+            if (!isWinner && !_killedPlayers.contains(player)){
                 losers.add(player);
                 bankForLosers.add(0);
             }
@@ -258,18 +300,34 @@ public class Game {
 
     public Player FindPlayer(String name){
         for (Player player: _players){
-            if (player.GetName().toLowerCase(Locale.ROOT) == name){
+            if (player.GetName().equals(name)){
                 return player;
             }
         }
         return null;
     }
-
-    public void SetPlayers(ArrayList<Player> players){
-        _players = players;
-    }
     public void AddPlayer(Player player){
+        player.SetActive(false);
         _players.add(player);
+    }
+
+    public Player KillPlayer(Player player){
+        player.SetActive(false);
+        if (_step == 3){
+            _players.remove(player);
+            return player;
+        }
+        _killedPlayers.add(player);
+        player.PlusMoney(-player.GetBet());
+        return player;
+    }
+
+    public ArrayList<Player> KillPlayers(ArrayList<Player> players){
+        ArrayList<Player> playersKilled = new ArrayList<>();
+        for (Player player : players){
+            playersKilled.add(KillPlayer(player));
+        }
+        return playersKilled;
     }
 
     public Hand GetTable(){

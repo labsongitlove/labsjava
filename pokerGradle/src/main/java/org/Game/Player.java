@@ -46,7 +46,7 @@ public class Player {
 
     public void SetHand(Hand hand) { _hand = hand; }
     public void SetMoney(int money) { _money = money; }
-    public void SetBet(int bet) { _bet = Math.min(_money, Math.max(bet, _bet)); }
+    public void SetBet(int bet) { _bet = Math.max(_bet, Math.min(_money, bet)); }
     public void ResetBet() { _bet = 0; }
     public void SetActive(boolean isActive) { _isActive = _money != 0 && isActive; }
     public void SetBetStatus(int betStatus) { _betStatus = betStatus; }

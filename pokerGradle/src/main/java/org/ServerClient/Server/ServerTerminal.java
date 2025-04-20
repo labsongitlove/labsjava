@@ -6,6 +6,7 @@ import org.Game.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Collection;
 
 public class ServerTerminal implements AutoCloseable{
     private Game _game;
@@ -19,13 +20,13 @@ public class ServerTerminal implements AutoCloseable{
         _input = new BufferedReader(new InputStreamReader(System.in));
     }
 
-    public void Uodate() throws IOException, JAXBException { //TODO поток в данной ситуации не нужен
+    public void Uodate() throws IOException, JAXBException {
         if (_input.ready()) {
             Execute(_input.readLine());
         }
     }
 
-    public void Execute(String command) throws JAXBException {
+    public void Execute(String command) throws JAXBException, IOException {
         command = command;
         String[] parsedCommand = command.split(" ");
         if (parsedCommand[0].equals("gamerule")){
@@ -39,6 +40,9 @@ public class ServerTerminal implements AutoCloseable{
         }
         if (parsedCommand[0].equals("add")){
             System.out.println(CommandAdd(parsedCommand));
+        }
+        if (parsedCommand[0].equals("kill")){
+            System.out.println(CommandKill(parsedCommand));
         }
         _internetManager.UpdateInfo();
     }
@@ -85,6 +89,7 @@ public class ServerTerminal implements AutoCloseable{
         if (parsedCommand.length > 2 && parsedCommand[1].equals("AI")){
             output.append("AI ");
             String name = "AI";
+            int type = 0;
             Hand hand = new Hand();
             int money = 10000;
             for (String rule: parsedCommand){
@@ -101,12 +106,32 @@ public class ServerTerminal implements AutoCloseable{
                     name = parsedRule[1];
                     output.append("name = " + parsedRule[1] + " ");
                 }
+                else if (parsedRule.length > 1 && parsedRule[0].equals("type")){
+                    type = Integer.parseInt(parsedRule[1]);
+                    output.append("type = " + parsedRule[1] + " ");
+                }
             }
             Player player = new Player(name, money, _internetManager.GetNextAvailableNum(), hand);
-            AI ai = new AI();
+            AI ai = new AI(type);
             _game.AddPlayer(player);
             _internetManager.AddAIInTable(player, ai);
         }
+        return output.toString();
+    }
+
+    private String CommandKill(String[] parsedCommand) throws IOException{
+        StringBuilder output = new StringBuilder("Killed ");
+        String name = "nothing";
+
+        if (parsedCommand.length > 1){
+            Player player = _game.FindPlayer(parsedCommand[1]);
+            if(player != null){
+                _internetManager.KillPlayer(player);
+                _game.KillPlayer(player);
+                name = parsedCommand[1];
+            }
+        }
+        output.append(name);
         return output.toString();
     }
 

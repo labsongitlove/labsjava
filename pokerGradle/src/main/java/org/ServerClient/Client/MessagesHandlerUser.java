@@ -6,10 +6,13 @@ import org.ServerClient.Message;
 import java.util.ArrayList;
 
 public class MessagesHandlerUser {
-    Hand _table;
-    Player _myPlayer;
-    ArrayList<Player> _players = new ArrayList<Player>();
-    int myNum;
+    private Hand _table;
+    private Player _myPlayer;
+    private ArrayList<Player> _players = new ArrayList<Player>();
+    private int myNum;
+
+    private boolean _isQuit = false;
+
     public MessagesHandlerUser(){
 
     }
@@ -18,7 +21,6 @@ public class MessagesHandlerUser {
             _table = message.GetTable();
             _players = message.GetPlayers();
             _myPlayer = FindMyPlayer(_players);
-            Print();
         }
         if (message.GetType() == 2){
             myNum = message.GetValue();
@@ -27,16 +29,20 @@ public class MessagesHandlerUser {
     public Message MakeMessage(String input){
         String[] parsingInput = input.split(" ");
         if (parsingInput.length > 1 && parsingInput[0].equals("join")){
-            return new Message(0, 0, parsingInput[1]);
+            return new Message(2, 0, parsingInput[1]);
         }
         else if (parsingInput.length > 1 && parsingInput[0].equals("bet")){
-            int money = 0;
+            int money;
             try {
                 money = Integer.parseInt(parsingInput[1]);
             } catch (NumberFormatException e){
                 return null;
             }
             return new Message(1, money, "");
+        }
+        else if (parsingInput.length > 0 && parsingInput[0].equals("quit")){
+            _isQuit = true;
+            return new Message(4, 0, "quit");
         }
         return null;
     }
@@ -49,34 +55,19 @@ public class MessagesHandlerUser {
         }
         return new Player();
     }
-    private void Print(){
-        StringBuilder string = new StringBuilder();
-        for (Card card : _table.GetCards()){
-            string.append(card.GetValue()).append("(").append(card.GetSuit()).append(") ");
-        }
-        System.out.println("\nTable: " + string);
 
-        string = new StringBuilder();
-        for (Card card : _myPlayer.GetHand().GetCards()){
-            string.append(card.GetValue()).append("(").append(card.GetSuit()).append(") ");
-        }
-        System.out.println("\nMy: " + string + "Bet: " + _myPlayer.GetBet() + " Money: " + _myPlayer.GetMoney());
-
-        string = new StringBuilder();
-        for (Player player : _players){
-            if (!player.equals(_myPlayer)){
-                string.append(player.GetName());
-                string.append(": ");
-                for (Card card : player.GetHand().GetCards()){
-                    string.append(card.GetValue()).append("(").append(card.GetSuit()).append(") ");
-                }
-                string.append("Bet: ");
-                string.append(player.GetBet());
-                string.append(" Money: ");
-                string.append(player.GetMoney());
-                string.append(" ");
-            }
-        }
-        System.out.println("\nPlayers: " + string);
+    public Hand GetTable(){
+        return _table;
+    }
+    public Player GetMyPlayer(){
+        return _myPlayer;
+    }
+    public ArrayList<Player> GetPlayers(){
+        return _players;
+    }
+    public boolean GetAndResetIsQuit(){
+        boolean isQuit = _isQuit;
+        _isQuit = false;
+        return isQuit;
     }
 }
