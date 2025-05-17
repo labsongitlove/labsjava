@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Меню 1 -->
+        <LinearLayout
+            android:id="@+id/menu1Layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/nameInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter Name" />
+
+            <Button
+                android:id="@+id/connectionButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Connect" />
+        </LinearLayout>
+
+        <!-- Меню 2 -->
+        <LinearLayout
+            android:id="@+id/menu2Layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp"
+            android:visibility="gone">
+
+            <Button
+                android:id="@+id/exitButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Exit" />
+
+            <Button
+                android:id="@+id/callButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Call" />
+
+            <Button
+                android:id="@+id/foldButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Fold" />
+
+            <EditText
+                android:id="@+id/betInput"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:hint="Enter Bet"
+                android:numeric="integer" />
+
+            <Button
+                android:id="@+id/betButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Bet" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/menu2Layout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tableBetView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingTop="8dp"
+                android:text="Table Bet:" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tableCards"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:padding="8dp"
+            android:gravity="center"
+            android:visibility="gone"
+            android:background="@drawable/container_bg">
+
+            <FrameLayout
+                android:id="@+id/cardTable1"
+                android:layout_width="70dp"
+                android:layout_height="110dp"
+                android:visibility="visible"
+                android:background="@drawable/player_card_bg">
+
+                <ImageView
+                    android:id="@+id/cardTable1Image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/c2_of_clubs" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/cardTable2"
+                android:layout_width="70dp"
+                android:layout_height="110dp"
+                android:visibility="visible"
+                android:background="@drawable/player_card_bg">
+
+                <ImageView
+                    android:id="@+id/cardTable2Image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/c2_of_clubs" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/cardTable3"
+                android:layout_width="70dp"
+                android:layout_height="110dp"
+                android:visibility="visible"
+                android:background="@drawable/player_card_bg">
+
+                <ImageView
+                    android:id="@+id/cardTable3Image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/c2_of_clubs" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/cardTable4"
+                android:layout_width="70dp"
+                android:layout_height="110dp"
+                android:visibility="visible"
+                android:background="@drawable/player_card_bg">
+
+                <ImageView
+                    android:id="@+id/cardTable4Image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/c2_of_clubs" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/cardTable5"
+                android:layout_width="70dp"
+                android:layout_height="110dp"
+                android:visibility="visible"
+                android:background="@drawable/player_card_bg">
+
+                <ImageView
+                    android:id="@+id/cardTable5Image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/c2_of_clubs" />
+
+            </FrameLayout>
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/playersRecyclerView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:clipToPadding="false"
+            android:orientation="horizontal"
+            android:overScrollMode="never"
+            android:visibility="gone"
+            android:scrollbars="horizontal" />
+
+    </LinearLayout>
+</ScrollView>
