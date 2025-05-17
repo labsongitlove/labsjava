@@ -1,9 +1,8 @@
 package org.Game;
 
+import org.ServerClient.Server.Status;
+
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Random;
 
 public class Game {
     private Hand _table;
@@ -11,7 +10,7 @@ public class Game {
     private ArrayList<Card> _cards;
     private int _type = 0; //0 - texas
     private int _step = 0;
-    private int _status = 0; //0 - finished; 1 - waiting bet; 2 - waiting next step
+    private Status _status = Status.FINISHED; //0 - finished; 1 - waiting bet; 2 - waiting next step
     private ArrayList<Player> _killedPlayers = new ArrayList<>();
     private GameRules _gameRules;
     private BetsManager _betsManager = new BetsManager();
@@ -36,7 +35,7 @@ public class Game {
     public void NextStep(){
         if (_type == 0){
             _status = _gameRules.NextStep(_step, _table, _players, _killedPlayers);
-            if (_status == 0){
+            if (_status == Status.FINISHED){
                 _step = 0;
                 _betsManager.Final(_players, _killedPlayers, _table, _gameRules.GetMaxCards());
             }
@@ -103,7 +102,7 @@ public class Game {
     public ArrayList<Player> GetPlayers(){
         return _players;
     }
-    public int GetStatus(){
+    public Status GetStatus(){
         return _status;
     }
     public Player BetPlayerNow(){

@@ -19,8 +19,8 @@ public class Server {
                 if (serverTerminal.IsGameUpdated()){
                     game = serverTerminal.GetGame();
                 }
-                int status = game.GetStatus();
-                if (status == 0 && game.GetPlayers() != null && game.GetPlayers().size() > 1){
+                Status status = game.GetStatus();
+                if (status == Status.FINISHED && game.GetPlayers() != null && game.GetPlayers().size() > 1){
                     if (time == 0){
                         internetManager.SendAllUnsafely();
                         time = System.currentTimeMillis();
@@ -32,7 +32,7 @@ public class Server {
                         time = 0;
                     }
                 }
-                else if (status == 1){
+                else if (status == Status.WAITING_BET){
                     if (!game.IsActiveMoreOne()){
                         game.NextStep();
                         System.out.println("Skip step");
@@ -51,34 +51,33 @@ public class Server {
                         }
                     }
                 }
-                else if (status == 2){
+                else if (status == Status.WAITING_NEXT_STEP){
                     game.NextStep();
                     System.out.println("Next step");
                     internetManager.UpdateInfo();
                 }
                 status = game.GetStatus();
-                if (status == 1 && game.TryPrebets()){
-                    System.out.println(game.GetStatus());
+                if (status == Status.WAITING_BET && game.TryPrebets()){
                     internetManager.UpdateInfo();
                 }
                 status = internetManager.GetStatus();
-                if (status == 1){
+                if (status == Status.NEW_USER){
                     Player player = internetManager.Registration();
                     game.AddPlayer(player);
                     System.out.println("New player");
                     internetManager.UpdateInfo();
                 }
-                else if (status == 2){
+                else if (status == Status.HAVE_MESSAGE){
                     internetManager.UpdateInfo();
-                    internetManager.SetStatus(0);
+                    internetManager.SetStatus(Status.NOTHING);
                 }
-                else if (status == 3){
+                else if (status == Status.QUITED_PLAYER){
                     game.KillPlayers(internetManager.GetQuitedPlayersInWait());
                     internetManager.KillQuitedPlayersInWait();
                     System.out.println("Quited player(s)");
 
                     internetManager.UpdateInfo();
-                    internetManager.SetStatus(0);
+                    internetManager.SetStatus(Status.NOTHING);
                 }
                 internetManager.Update();
             }

@@ -1,5 +1,7 @@
 package org.Game;
 
+import org.ServerClient.Server.Status;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -26,9 +28,9 @@ public class GameRules {
         }
     }
 
-    public int NextStep(int stepNow, Hand table, ArrayList<Player> players, ArrayList<Player> killedPlayers){
+    public Status NextStep(int stepNow, Hand table, ArrayList<Player> players, ArrayList<Player> killedPlayers){
         if (!IsActiveMoreOne(players) && stepNow != 0 || players.size() < 2)
-            return 0;
+            return Status.FINISHED;
         if (_type == 0){
             switch (stepNow){
                 case 0:
@@ -38,17 +40,17 @@ public class GameRules {
                     table.AddCard(CardChoice());
                     table.AddCard(CardChoice());
                     table.AddCard(CardChoice());
-                    return 1;
+                    return Status.WAITING_BET;
                 case 2, 3:
                     table.AddCard(CardChoice());
-                    return 1;
+                    return Status.WAITING_BET;
                 case 4:
-                    return 0;
+                    return Status.FINISHED;
             }
         }
-        return -1;
+        return Status.NULL;
     }
-    public int Start(Hand table, ArrayList<Player> players, ArrayList<Player> killedPlayers) {
+    public Status Start(Hand table, ArrayList<Player> players, ArrayList<Player> killedPlayers) {
         if (_type == 0) {
             for (Player player : killedPlayers){
                 players.remove(player);
@@ -72,9 +74,9 @@ public class GameRules {
             for (Player player : players){
                 player.SetActive(true);
             }
-            return 1;
+            return Status.WAITING_BET;
         }
-        return -1;
+        return Status.NULL;
     }
 
     public Card CardChoice(){

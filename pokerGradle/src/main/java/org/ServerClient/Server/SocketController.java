@@ -75,7 +75,7 @@ public class SocketController implements Runnable {
         }
     }
     public synchronized void AddMessage(Message message) throws JAXBException {
-        _InputMessages.addLast(message.Marshal());
+        _InputMessages.addLast(message.MarshalJSON());
     }
     public synchronized Message ReadMessage() throws JAXBException{
         var xml = _OutputMessages.pollFirst();

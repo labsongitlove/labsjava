@@ -2,10 +2,11 @@ package org.VMC;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        try(Controller controller = new Controller()){
-            Model model = new Model(controller);
+        Model model = new Model();
+        try(Controller controller = new Controller(model)){
             View view = new View(model);
             while(true){
+                controller.Update();
                 model.Update();
                 view.Update();
             }

@@ -16,7 +16,7 @@ public class SocketUser implements Runnable {
     private boolean _connectionIsClosed = false;
 
     public void run() {
-        try(Socket socket = new Socket("localhost", 3345);
+        try(Socket socket = new Socket("10.0.2.2", 3345);
             BufferedWriter output = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream())))
         {

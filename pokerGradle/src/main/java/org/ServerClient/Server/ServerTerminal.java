@@ -36,7 +36,7 @@ public class ServerTerminal implements AutoCloseable{
             System.out.println(CommandSet(parsedCommand));
         }
         if (parsedCommand[0].equals("start")){
-            if (_game.GetStatus() == 0)
+            if (_game.GetStatus() == Status.FINISHED)
                 _game.NextStep();
         }
         if (parsedCommand[0].equals("add")){

@@ -17,7 +17,7 @@ public class MessagesHandlerServer {
     }
     public void Parsing(Message message, Player player){
         if (message.GetType() == 1){
-            if (_game.GetStatus() == 1){
+            if (_game.GetStatus() == Status.WAITING_BET){
                 _game.DoBet(player, message.GetValue());
             }
         }

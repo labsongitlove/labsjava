@@ -19,7 +19,7 @@ public class InternetManager implements AutoCloseable {
     private HashMap<Integer, Player> _tokenPlayerTable = new HashMap<>();
     private HashMap<Player, AI> _playerAITable = new HashMap<>();
     private MessagesHandlerServer _messagesHandlerServer;
-    private int _status = 0; //0 - nothing, 1 - new user, 2 - have message, 3 - quited player
+    private Status _status = Status.NOTHING; //0 - nothing, 1 - new user, 2 - have message, 3 - quited player
     private ServerSocket _serverSocket;
     private int _nextAvailableNum = 0;
     private ArrayList<Integer> _quitedTokens = new ArrayList<>();
@@ -52,7 +52,7 @@ public class InternetManager implements AutoCloseable {
             if (socket.IsHaveMessages()){
                 Message message = socket.ReadMessage();
                 CheckMessage(message, socket.GetToken());
-                _status = 2;
+                _status = Status.HAVE_MESSAGE;
                 if (_messagesHandlerServer.IsQuitMessage(message)){
                     _quitedTokens.add(socket.GetToken());
                 }
@@ -62,11 +62,11 @@ public class InternetManager implements AutoCloseable {
             }
         }
         if (!_quitedTokens.isEmpty()){
-            _status = 3;
+            _status = Status.QUITED_PLAYER;
         }
         if (_socketNext.IsHaveMessages()){
             if (_messagesHandlerServer.IsMessageRegistrationOrLogin(_socketNext.GetMessage()))
-                _status = 1;
+                _status = Status.NEW_USER;
         }
         if (_socketNext.GetConnectionLostTime() >= 1000 || _socketNext.GetAfkTime() >= 1000){
             _socketNext.CloseClient();
@@ -93,7 +93,7 @@ public class InternetManager implements AutoCloseable {
         _socketNext = new SocketController(_serverSocket);
         _socketNextThread = new Thread(_socketNext);
         _socketNextThread.start();
-        _status = 0;
+        _status = Status.NOTHING;
 
         return player;
     }
@@ -167,9 +167,9 @@ public class InternetManager implements AutoCloseable {
         _playerAITable.put(player, ai);
     }
 
-    public void SetStatus(int status) { _status = status; }
+    public void SetStatus(Status status) { _status = status; }
 
-    public int GetStatus(){
+    public Status GetStatus(){
         return _status;
     }
 

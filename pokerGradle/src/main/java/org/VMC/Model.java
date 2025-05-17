@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Model {
-    private final Controller _controller;
     private boolean _isHaveChanges = false;
     private boolean _isQuit = false;
 
@@ -22,16 +21,10 @@ public class Model {
     private Player _myPlayer;
     private ArrayList<Player> _players = new ArrayList<Player>();
 
-    public Model(Controller controller){
-        _controller = controller;
-
+    public Model(){
         _socket = new SocketUser();
     }
     public void Update() throws IOException, JAXBException {
-        String input = _controller.GetInput();
-        if (input != null){
-            SendMessage(input);
-        }
         if (_socket.IsHaveMessages()){
             ReadMessage();
             _isHaveChanges = true;
@@ -44,6 +37,11 @@ public class Model {
             _isQuit = true;
         }
     }
+    public void UpdateFromController(String input) throws JAXBException {
+        if (input != null){
+            SendMessage(input);
+        }
+    }
     public Hand GetTable(){
         return _table;
     }
@@ -51,6 +49,14 @@ public class Model {
         return _myPlayer;
     }
     public ArrayList<Player> GetPlayers(){
+        if (_players != null && _myPlayer != null){
+            _players.remove(_myPlayer);
+            ArrayList<Player> players = new ArrayList<>();
+            players.add(_myPlayer);
+            players.addAll(_players);
+            _players.add(_myPlayer);
+            return players;
+        }
         return _players;
     }
     public boolean IsHaveChanges(){

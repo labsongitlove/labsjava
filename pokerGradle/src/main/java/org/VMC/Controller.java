@@ -1,19 +1,23 @@
 package org.VMC;
 
+import jakarta.xml.bind.JAXBException;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Controller implements AutoCloseable {
     BufferedReader _reader;
-    public Controller(){
+    Model _model;
+    public Controller(Model model){
+        _model = model;
+
         _reader = new BufferedReader(new InputStreamReader(System.in));
     }
-    public String GetInput() throws IOException {
+    public void Update() throws IOException, JAXBException {
         if (_reader.ready()){
-            return (_reader.readLine());
+            _model.UpdateFromController(_reader.readLine());
         }
-        return null;
     }
 
     @Override

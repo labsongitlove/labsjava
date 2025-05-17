@@ -1,5 +1,7 @@
 package org.Game;
 
+import org.ServerClient.Server.Status;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -15,15 +17,13 @@ public class BetsManager {
 
     }
     public void NextStep(int type, int step, ArrayList<Player> players){
-        if (type == 0){
-            if (step == 0){
-                Start(players);
-            }
-            else{
-                _isFirstBetInStep = true;
-                CleanBetStatuses(players);
-                _betPlayerIndexNow = _dealerPlayerIndexNow;
-            }
+        if (step == 0){
+            Start(players);
+        }
+        else{
+            _isFirstBetInStep = true;
+            CleanBetStatuses(players);
+            _betPlayerIndexNow = _dealerPlayerIndexNow;
         }
     }
     public void DoBet(Player playerBet, int money){
@@ -31,7 +31,7 @@ public class BetsManager {
             _preBets.put(playerBet, money);
         }
     }
-    public int TryPrebets (ArrayList<Player> players){
+    public Status TryPrebets (ArrayList<Player> players){
         _isWasPrebets = false;
         int num = GetNumActivePlayer(0, _betPlayerIndexNow, players);
         _betPlayerIndexNow = num;
@@ -70,7 +70,7 @@ public class BetsManager {
             _betNow = Math.max(_betNow, money);
             _betPlayerIndexNow = num;
             if (players.get(num).GetBetStatus() == 2){
-                return 2;
+                return Status.WAITING_NEXT_STEP;
             }
             if (_preBets.containsKey(players.get(_betPlayerIndexNow)) &&
                     _preBets.get(players.get(_betPlayerIndexNow)) < _betNow &&
@@ -78,7 +78,7 @@ public class BetsManager {
                 _preBets.remove(players.get(_betPlayerIndexNow));
             }
         }
-        return 1;
+        return Status.WAITING_BET;
     }
     private void CleanBetStatuses(ArrayList<Player> players){
         for (Player player : players){
